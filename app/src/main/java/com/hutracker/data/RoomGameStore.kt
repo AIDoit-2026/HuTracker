@@ -19,9 +19,10 @@ import com.hutracker.domain.ScoreEntry
 import com.hutracker.domain.ScoringMode
 
 class RoomGameStore(context: Context) {
-    private val dao: GameDao = Room.databaseBuilder(context, HuTrackerDatabase::class.java, "hutracker.db")
+    private val db = Room.databaseBuilder(context, HuTrackerDatabase::class.java, "hutracker.db")
         .allowMainThreadQueries()
         .build()
+    private val dao: GameDao = db.gameDao()
 
     fun listGames(): List<GameRecord> = dao.listGames().mapNotNull { load(it.id) }
     fun getGame(gameId: String): GameRecord? = dao.getGame(gameId)?.let { load(it.id) }
