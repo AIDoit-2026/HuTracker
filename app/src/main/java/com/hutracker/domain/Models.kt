@@ -72,7 +72,7 @@ data class PlayerSummary(
     val winCount: Int,
 ) {
     val averageWinScore: Double
-        get() = if (winCount == 0) 0.0 else netScore.toDouble() / winCount
+        get() = if (winCount == 0) 0.0 else recordedWinTotal.toDouble() / winCount
 }
 
 data class SettlementLine(

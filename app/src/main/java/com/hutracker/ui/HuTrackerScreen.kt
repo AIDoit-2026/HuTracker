@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -32,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hutracker.domain.GameRecord
@@ -82,6 +84,7 @@ fun HuTrackerScreen(viewModel: HuTrackerViewModel) {
                     onAdd = viewModel::openAddEntryDialog,
                     onEdit = viewModel::openEditEntryDialog,
                     onDelete = viewModel::deleteEntry,
+                    onSelectEntry = viewModel::selectEntry,
                     onSettle = viewModel::openConfirmSettlement,
                 )
                 AppTab.SETTLEMENT -> SettlementPane(
@@ -168,7 +171,7 @@ private fun GameCard(record: GameRecord, onClick: () -> Unit) {
                 fontWeight = FontWeight.SemiBold,
             )
             Text(text = "${record.game.scoringMode.label} · ${record.game.status.label}")
-            Text(text = "当前：${record.game.currentRoundIndex.toDirectionLabel()} / ${record.players[record.game.currentDealerIndex].name}")
+            Text(text = "当前：${record.currentSeatLabel()}")
             Text(text = "记录数：${record.entries.size}")
         }
     }
@@ -180,6 +183,7 @@ private fun CurrentGamePane(
     onAdd: () -> Unit,
     onEdit: (com.hutracker.domain.ScoreEntry) -> Unit,
     onDelete: (String) -> Unit,
+    onSelectEntry: (String) -> Unit,
     onSettle: () -> Unit,
 ) {
     val record = state.activeGame
@@ -187,7 +191,6 @@ private fun CurrentGamePane(
         EmptyPane("暂无牌局", "到“牌局”页新建一局。")
         return
     }
-    val dealer = record.players[record.game.currentDealerIndex]
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -199,8 +202,6 @@ private fun CurrentGamePane(
 
         Card(modifier = Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("当前圈庄", style = MaterialTheme.typography.titleMedium)
-                Text("${record.game.currentRoundIndex.toDirectionLabel()} · 庄家：${dealer.name}")
                 if (record.game.status == GameStatus.ACTIVE) {
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         ElevatedButton(onClick = onAdd) { Text("记一笔") }
@@ -222,6 +223,8 @@ private fun CurrentGamePane(
                     players = record.players,
                     onEdit = if (record.game.status == GameStatus.ACTIVE) { { onEdit(entry) } } else null,
                     onDelete = if (record.game.status == GameStatus.ACTIVE) { { onDelete(entry.id) } } else null,
+                    onSelect = { onSelectEntry(entry.id) },
+                    selected = state.selectedEntryId == entry.id,
                     index = index + 1,
                 )
             }
@@ -236,7 +239,7 @@ private fun SummaryCard(record: GameRecord) {
             Text("当前牌局", style = MaterialTheme.typography.titleMedium)
             Text(record.players.joinToString(" · ") { it.name })
             Text("模式：${record.game.scoringMode.label} · 状态：${record.game.status.label}")
-            Text("当前：${record.game.currentRoundIndex.toDirectionLabel()} · ${record.players[record.game.currentDealerIndex].name}")
+            Text("当前：${record.currentSeatLabel()}")
         }
     }
 }
@@ -248,6 +251,8 @@ private fun EntryCard(
     index: Int,
     onEdit: (() -> Unit)?,
     onDelete: (() -> Unit)?,
+    onSelect: () -> Unit,
+    selected: Boolean,
 ) {
     val content = if (entry.equalWinnerPlayerId != null) {
         val winner = players.first { it.id == entry.equalWinnerPlayerId }
@@ -260,15 +265,19 @@ private fun EntryCard(
         }
         "非等额 · $positiveText"
     }
-    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors()) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text("第 $index 笔", style = MaterialTheme.typography.titleMedium)
-            Text("${entry.roundIndex.toDirectionLabel()} · 庄家：${players.first { it.id == entry.dealerPlayerId }.name}")
-            Text(content)
-            if (entry.note.isNotBlank()) {
-                Text("备注：${entry.note}")
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onSelect),
+        colors = CardDefaults.cardColors(containerColor = if (selected) MaterialTheme.colorScheme.surfaceVariant else Color.White),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text("$index.", style = MaterialTheme.typography.labelLarge)
+            Text(content, modifier = Modifier.weight(1f), maxLines = 1)
+            if (entry.note.isNotBlank()) Text(entry.note, maxLines = 1, style = MaterialTheme.typography.bodySmall)
+            if (selected) {
                 if (onEdit != null) OutlinedButton(onClick = onEdit) { Text("修改") }
                 if (onDelete != null) OutlinedButton(onClick = onDelete) { Text("删除") }
             }
@@ -321,12 +330,13 @@ private fun SettlementPane(
 
 @Composable
 private fun SummaryRow(summary: PlayerSummary) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = playerColor(summary.player.seatIndex))) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(summary.player.name, style = MaterialTheme.typography.titleMedium)
             Text("净分：${summary.netScore}")
+            Text("得分：${summary.recordedWinTotal}")
             Text("胡牌次数：${summary.winCount}")
-            Text("平均每次得分：${String.format(Locale.CHINA, "%.2f", summary.averageWinScore)}")
+            Text("平均得分：${String.format(Locale.CHINA, "%.2f", summary.averageWinScore)}")
         }
     }
 }
@@ -445,3 +455,14 @@ private fun EmptyPane(title: String, message: String) {
 }
 
 private fun Int.toDirectionLabel(): String = SeatDirection.entries[this % SeatDirection.entries.size].label + "风"
+
+private fun GameRecord.currentSeatLabel(): String =
+    "${game.currentRoundIndex.toDirectionLabel()}${players[game.currentDealerIndex].seat.label}"
+
+private fun playerColor(index: Int): Color {
+    val colors = listOf(
+        Color(0xFFE0F2FE), Color(0xFFDCFCE7), Color(0xFFFEF3C7),
+        Color(0xFFFCE7F3), Color(0xFFEDE9FE), Color(0xFFFFEDD5),
+    )
+    return colors[index]
+}

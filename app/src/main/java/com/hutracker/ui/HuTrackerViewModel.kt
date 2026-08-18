@@ -36,6 +36,7 @@ data class EntryDraft(
 data class HuTrackerUiState(
     val games: List<GameRecord> = emptyList(),
     val selectedGameId: String? = null,
+    val selectedEntryId: String? = null,
     val activeGame: GameRecord? = null,
     val summaries: List<PlayerSummary> = emptyList(),
     val settlementLines: List<SettlementLine> = emptyList(),
@@ -62,7 +63,11 @@ class HuTrackerViewModel(private val store: RoomGameStore) : ViewModel() {
     }
 
     fun selectGame(gameId: String) {
-        sync(uiState.copy(selectedGameId = gameId, activeTab = AppTab.CURRENT))
+        sync(uiState.copy(selectedGameId = gameId, selectedEntryId = null, activeTab = AppTab.CURRENT))
+    }
+
+    fun selectEntry(entryId: String) {
+        sync(uiState.copy(selectedEntryId = if (uiState.selectedEntryId == entryId) null else entryId))
     }
 
     fun openNewGameDialog() {
@@ -180,7 +185,7 @@ class HuTrackerViewModel(private val store: RoomGameStore) : ViewModel() {
                 }
             }
         }.onSuccess {
-            sync(uiState.copy(showEntryDialog = false, entryDraft = EntryDraft(), errorMessage = null))
+            sync(uiState.copy(showEntryDialog = false, entryDraft = EntryDraft(), selectedEntryId = null, errorMessage = null))
         }.onFailure { error ->
             sync(uiState.copy(errorMessage = error.message ?: "保存记录失败"))
         }
@@ -191,7 +196,7 @@ class HuTrackerViewModel(private val store: RoomGameStore) : ViewModel() {
         runCatching {
             store.deleteEntry(record.game.id, entryId)
         }.onSuccess {
-            sync(uiState.copy(errorMessage = null))
+            sync(uiState.copy(selectedEntryId = null, errorMessage = null))
         }.onFailure { error ->
             sync(uiState.copy(errorMessage = error.message ?: "删除记录失败"))
         }
