@@ -22,6 +22,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -33,6 +35,8 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -94,8 +98,11 @@ fun HuTrackerScreen(viewModel: HuTrackerViewModel) {
                     TopAppBar(
                         title = { Text("胡牌追踪器") },
                         navigationIcon = {
-                            TextButton(onClick = { drawerScope.launch { drawerState.open() } }) {
-                                Text("菜单")
+                            IconButton(onClick = { drawerScope.launch { drawerState.open() } }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Menu,
+                                    contentDescription = "打开菜单",
+                                )
                             }
                         },
                     )
