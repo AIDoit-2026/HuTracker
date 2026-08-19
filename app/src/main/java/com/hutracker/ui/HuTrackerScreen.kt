@@ -37,6 +37,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -112,7 +115,16 @@ fun HuTrackerScreen(viewModel: HuTrackerViewModel) {
                 Column(Modifier.fillMaxSize().padding(padding)) {
                     TabRow(selectedTabIndex = state.activeTab.ordinal) {
                         AppTab.entries.forEach { tab ->
-                            Tab(selected = state.activeTab == tab, onClick = { viewModel.setTab(tab) }, text = { Text(tab.label) })
+                            Tab(
+                                selected = state.activeTab == tab,
+                                onClick = { viewModel.setTab(tab) },
+                                text = {
+                                    Column(horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
+                                        Icon(imageVector = tab.icon, contentDescription = null)
+                                        Text(tab.label)
+                                    }
+                                },
+                            )
                         }
                     }
                     when (state.activeTab) {
@@ -520,3 +532,10 @@ private fun playerColor(index: Int): Color {
     )
     return colors[index]
 }
+
+private val AppTab.icon
+    get() = when (this) {
+        AppTab.GAMES -> Icons.Outlined.List
+        AppTab.CURRENT -> Icons.Outlined.EditNote
+        AppTab.SETTLEMENT -> Icons.Outlined.ReceiptLong
+    }
