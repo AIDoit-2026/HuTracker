@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -29,6 +32,14 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.viewinterop.AndroidView
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -43,12 +54,16 @@ import com.hutracker.domain.PlayerSummary
 import com.hutracker.domain.ScoringMode
 import com.hutracker.domain.SeatDirection
 import java.util.Locale
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HuTrackerScreen(viewModel: HuTrackerViewModel) {
     val state = viewModel.uiState
     val snackbarHostState = remember { SnackbarHostState() }
+    var showRules by remember { mutableStateOf(false) }
+    val drawerState = androidx.compose.material3.rememberDrawerState(DrawerValue.Closed)
+    val drawerScope = rememberCoroutineScope()
 
     LaunchedEffect(state.errorMessage) {
         val message = state.errorMessage ?: return@LaunchedEffect
@@ -56,42 +71,49 @@ fun HuTrackerScreen(viewModel: HuTrackerViewModel) {
         viewModel.clearError()
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("胡牌追踪器") })
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-        ) {
-            TabRow(selectedTabIndex = state.activeTab.ordinal) {
-                AppTab.entries.forEach { tab ->
-                    Tab(
-                        selected = state.activeTab == tab,
-                        onClick = { viewModel.setTab(tab) },
-                        text = { Text(tab.label) },
-                    )
-                }
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                Text("帮助", modifier = Modifier.padding(24.dp), style = MaterialTheme.typography.titleLarge)
+                TextButton(
+                    onClick = {
+                        showRules = true
+                        drawerScope.launch { drawerState.close() }
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+                ) { Text("国标麻将番种") }
             }
-
-            when (state.activeTab) {
-                AppTab.GAMES -> GameListPane(state = state, onSelect = viewModel::selectGame, onNew = viewModel::openNewGameDialog)
-                AppTab.CURRENT -> CurrentGamePane(
-                    state = state,
-                    onAdd = viewModel::openAddEntryDialog,
-                    onEdit = viewModel::openEditEntryDialog,
-                    onDelete = viewModel::deleteEntry,
-                    onSelectEntry = viewModel::selectEntry,
-                    onSettle = viewModel::openConfirmSettlement,
-                )
-                AppTab.SETTLEMENT -> SettlementPane(
-                    state = state,
-                    onConfirm = viewModel::confirmSettlement,
-                    onBack = { viewModel.setTab(AppTab.CURRENT) },
-                )
+        },
+    ) {
+        if (showRules) {
+            RulesPage(onBack = { showRules = false })
+        } else {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = { Text("胡牌追踪器") },
+                        navigationIcon = {
+                            TextButton(onClick = { drawerScope.launch { drawerState.open() } }) {
+                                Text("菜单")
+                            }
+                        },
+                    )
+                },
+                snackbarHost = { SnackbarHost(snackbarHostState) },
+            ) { padding ->
+                Column(Modifier.fillMaxSize().padding(padding)) {
+                    TabRow(selectedTabIndex = state.activeTab.ordinal) {
+                        AppTab.entries.forEach { tab ->
+                            Tab(selected = state.activeTab == tab, onClick = { viewModel.setTab(tab) }, text = { Text(tab.label) })
+                        }
+                    }
+                    when (state.activeTab) {
+                        AppTab.GAMES -> GameListPane(state = state, onSelect = viewModel::selectGame, onNew = viewModel::openNewGameDialog)
+                        AppTab.CURRENT -> CurrentGamePane(state, viewModel::openAddEntryDialog, viewModel::openEditEntryDialog, viewModel::deleteEntry, viewModel::selectEntry, viewModel::openConfirmSettlement)
+                        AppTab.SETTLEMENT -> SettlementPane(state, viewModel::confirmSettlement) { viewModel.setTab(AppTab.CURRENT) }
+                    }
+                }
             }
         }
     }
@@ -132,6 +154,31 @@ fun HuTrackerScreen(viewModel: HuTrackerViewModel) {
             dismissButton = {
                 OutlinedButton(onClick = viewModel::closeConfirmSettlement) {
                     Text("取消")
+                }
+            },
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun RulesPage(onBack: () -> Unit) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("国标麻将番种") },
+                navigationIcon = { TextButton(onClick = onBack) { Text("返回") } },
+            )
+        },
+    ) { padding ->
+        AndroidView(
+            modifier = Modifier.fillMaxSize().padding(padding),
+            factory = { context ->
+                WebView(context).apply {
+                    webViewClient = WebViewClient()
+                    settings.javaScriptEnabled = false
+                    settings.defaultTextEncodingName = "UTF-8"
+                    loadUrl("file:///android_asset/guobiao_fan.html")
                 }
             },
         )

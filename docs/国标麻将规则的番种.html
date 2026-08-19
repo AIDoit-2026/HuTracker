@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh" data-mode="sepia"><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <base target="_blank">
+  <style type="text/css" id="ftp">html[data-mode="light"] {
+    color-scheme: light;
+    --fg: #222;
+    --bd: #222;
+    --bg: whitesmoke;
+  }
+  html[data-mode="dark"] {
+    color-scheme: dark;
+    --fg: #eee;
+    --bd: #eee;
+    --bg: #333;
+  }
+  html[data-mode="sepia"] {
+    color-scheme: light;
+    --fg: #5b4636;
+    --bd: #5b4636;
+    --bg: #f4ecd8;
+  }
+  html[data-mode="solarized-light"] {
+    color-scheme: light;
+    --fg: #586e75;
+    --bd: #586e75;
+    --bg: #fdf6e3;
+  }
+  html[data-mode="nord-light"] {
+    color-scheme: light;
+    --fg: #2e3440;
+    --bd: #2e3440;
+    --bg: #e5e9f0;
+  }
+  html[data-mode="groove-dark"] {
+    color-scheme: dark;
+    --fg: #cec4ac;
+    --bd: #cec4ac;
+    --bg: #282828
+  }
+  html[data-mode="solarized-dark"] {
+    color-scheme: dark;
+    --fg: #839496;
+    --bd: #839496;
+    --bg: #002b36;
+  }
+  html[data-mode="nord-dark"] {
+    color-scheme: dark;
+    --fg: #e5e9f0;
+    --bd: #e5e9f0;
+    --bg: #2e3440;
+  }</style>
+  <style>
+    /* latin */
+    @font-face {
+      font-family: 'Comic Neue';
+      font-style: normal;
+      font-weight: 400;
+      src: url(fonts/4UaHrEJDsxBrF37olUeD96rp57F2IwM.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Lexend Deca';
+      font-style: normal;
+      font-weight: 400;
+      src: url(fonts/K2FifZFYk-dHSE0UPPuwQ7CrD94i-NCKm-U48M1wqxnDirZPl3v-.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    /* latin */
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 400;
+      src: url(fonts/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    :root {
+      --fg: #000; /* foreground  */
+      --bg: #fff; /* background  */
+      --bd: #000; /* border  */
+      --lk: #006fa5; /* link */
+      --lkv: #d33bf0; /* link visited */
+      --hg: #ffff81; /* highlight  */
+    }
+    html {
+      overflow: overlay;
+      scrollbar-color: var(--fg) var(--bg);
+    }
+    html[data-mode$="dark"] {
+      --lk: #0096de;
+    }
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      margin: 30px auto 0 auto;
+      padding: 10px;
+      position: relative;
+
+      color: var(--fg);
+      border-color: var(--bd);
+      background-color: var(--bg);
+    }
+
+
+    @media print {
+      html[data-mode] {
+        --fg: #000;
+        --bd: #000;
+        --bg: #fff;
+
+        width: unset;
+        padding: 0;
+        margin: 0;
+      }
+    }
+    iframe,
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    img:not([width])[src$=".svg"] {
+      max-width: 100px;
+    }
+    body[data-images=false] canvas,
+    body[data-images=false] svg,
+    body[data-images=false] img {
+      display: none;
+    }
+    svg:not([width]):not([height]) {
+      max-width: 25vmin;
+    }
+    a {
+      color: var(--lk);
+      text-decoration: none;
+    }
+    a:visited {
+      color: var(--lkv);
+    }
+
+    hr {
+      background-color: var(--bd);
+      height: 1px;
+      border: 0;
+    }
+    #reader-domain {
+      display: inline-flex;
+      align-items: anchor-center;
+      gap: 5px;
+      font-family: Helvetica, Arial, sans-serif;
+      text-decoration: none;
+      border-bottom-color: currentcolor;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      direction: ltr;
+    }
+    #reader-domain > span:nth-of-type(1) {
+      font-size: 1.1em;
+    }
+    #reader-domain > span:nth-of-type(2) {
+      font-size: 0.8em;
+    }
+    #reader-domain[data-mode="compact"] > span:nth-of-type(3) {
+      display: none
+    }
+    #reader-domain:not([data-mode="compact"]) > span:nth-of-type(1),
+    #reader-domain:not([data-mode="compact"]) > span:nth-of-type(2) {
+      display: none;
+    }
+
+    #reader-title {
+      font-size: 1.6em;
+      line-height: 1.25em;
+      width: 100%;
+      margin: 20px 0;
+      padding: 0;
+    }
+    #reader-credits,
+    #doi,
+    #published-time,
+    #reader-estimated-time {
+      font-size: 0.85em;
+      line-height: 1.48em;
+      margin: 0 0 10px 0;
+      padding: 0;
+    }
+    #reader-credits:not(:empty)::after {
+      content: ' ⋮ ';
+    }
+    #published-time:not(:empty)::before {
+      content: ' ⋮ ';
+    }
+    #doi-json {
+      overflow: hidden;
+    }
+    #doi-json code {
+      overflow: auto;
+      max-height: 400px;
+    }
+    #published-time:empty,
+    #reader-credits:empty {
+      display: none;
+    }
+    mark.hghlght {
+      background-color: var(--hg);
+    }
+    body:not([data-columns="1"]) .page :is(h1, h2) {
+      column-span: all;
+      background-color: rgba(125, 125, 125, 0.1);
+      padding: 10px;
+    }
+    .hidden {
+      display: none;
+    }
+    .page-separator {
+      background-color: rgba(125, 125, 125, 0.1);
+      padding-block: 2ch;
+      text-align: center;
+      font-size: medium;
+    }
+  </style>
+  <style id="user-css">body {
+  padding-bottom: 64px;
+}
+pre {
+  white-space: pre-wrap;
+}
+pre code {
+  background-color: #eff0f1;
+  color: #393318;
+  font-family: monospace;
+  display: block;
+  padding: 5px 10px;
+  overflow: hidden;
+}
+blockquote {
+  padding: 0;
+  padding-inline-start: 2ch;
+  border-inline-start: 2px solid var(--bd);
+}
+aside {
+  color: color-mix(in srgb, var(--fg), var(--bg) 20%);
+}
+body[data-mode="dark"] pre code {
+  background-color: #eff0f1;
+  color: #393318;
+}
+
+/* CSS for sans-serif fonts */
+body[data-font=sans-serif] {}
+/* CSS for serif fonts */
+body[data-font=serif] {}
+
+/* CSS for "sepia" theme */
+html[data-mode=sepia] body {}
+/* CSS for "light" theme */
+html[data-mode=light] body {}
+/* CSS for "dark" theme */
+html[data-mode=dark] body {}</style>
+<title>国标麻将规则的番种</title></head>
+<body tabindex="1" data-images="true" data-font="sans-serif" data-columns="1">
+  <div id="readability-page-1" class="page"><div options="[object Object]"><p data-first-child="" data-pid="eiaFla6g"><b>88番</b></p><p data-pid="QO5T-zGi">1 大四喜 由4副风刻(杠)组成的和牌。不计圈风刻、门风刻、三风刻、碰碰和</p><p data-pid="UndVbmbD">2 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%A4%A7%E4%B8%89%E5%85%83&amp;zhida_source=entity" target="_blank">大三元<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 和牌中，有中发白3副刻子。不计箭刻</p><p data-pid="UpI9VYR5">3 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E7%BB%BF%E4%B8%80%E8%89%B2&amp;zhida_source=entity" target="_blank">绿一色<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由23468条及发字中的任何牌组成的顺子、刻五、将的和牌。不计混一色。如无“发”字组成的各牌，可计<span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E6%B8%85%E4%B8%80%E8%89%B2&amp;zhida_source=entity" target="_blank">清一色<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span></p><p data-pid="gVE6_IiX">4 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B9%9D%E8%8E%B2%E5%AE%9D%E7%81%AF&amp;zhida_source=entity" target="_blank">九莲宝灯<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由一种花色序数牌子按1112345678999组成的特定牌型，见同花色任何1张序数牌即成和牌。不计清一色</p><p data-pid="haeBDbE8">5 四杠 4个杠</p><p data-pid="nJZ55ra_">6 连<span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%83%E5%AF%B9&amp;zhida_source=entity" target="_blank">七对<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由一种花色序数牌组成序数相连的7个对子的和牌。不计清一色、不求人、单钓 </p><p data-pid="5N8TDfDA">7 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%8D%81%E4%B8%89%E5%B9%BA&amp;zhida_source=entity" target="_blank">十三幺<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由3种序数牌的一、九牌，7种字牌及其中一对作将组成的和牌。不计五门齐、不求人、单钓</p><p data-pid="ZovUIDWv"><b>64番</b></p><p data-pid="G-fkoX5w">8 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E6%B8%85%E5%B9%BA%E4%B9%9D&amp;zhida_source=entity" target="_blank">清幺九<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由序数牌一、九刻子组成的和牌。不计碰碰和、同刻、无字 </p><p data-pid="-L4EJfYU">9 小四喜 和牌时有风牌的3副刻子及将牌。不计三风刻</p><p data-pid="Rz2b-Cxq">10 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%B0%8F%E4%B8%89%E5%85%83&amp;zhida_source=entity" target="_blank">小三元<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 和牌时有箭牌的两副刻子及将牌。不计箭刻</p><p data-pid="NmzvU7c5">11 字一色 由字牌的刻子(杠)、将组成的和牌。不计碰碰和</p><p data-pid="10MAAWcE">12 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%9B%9B%E6%9A%97%E5%88%BB&amp;zhida_source=entity" target="_blank">四暗刻<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 4个暗刻(暗杠)。不计门前清、碰碰和</p><p data-pid="OG1dNKcK">13 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%80%E8%89%B2%E5%8F%8C%E9%BE%99%E4%BC%9A&amp;zhida_source=entity" target="_blank">一色双龙会<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 一种花色的两个老少副，5为将牌。不计平和、七对、清一色</p><p data-pid="SHG1qJIv"><b>48番</b></p><p data-pid="LjHSrayV">14 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%80%E8%89%B2%E5%9B%9B%E5%90%8C%E9%A1%BA&amp;zhida_source=entity" target="_blank">一色四同顺<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 一种花色4副序数相同的顺子，不计一色三节高、一般高、四归一 </p><p data-pid="_qAVrJ5G">15 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%80%E8%89%B2%E5%9B%9B%E8%8A%82%E9%AB%98&amp;zhida_source=entity" target="_blank">一色四节高<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 一种花色4副依次递增一位数的刻子不计一色三同顺、碰碰和 </p><p data-pid="1LZwf-Fa"><b>32番</b></p><p data-pid="5bxRzQDN">16 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%80%E8%89%B2%E5%9B%9B%E6%AD%A5%E9%AB%98&amp;zhida_source=entity" target="_blank">一色四步高<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 一种花色4副依次递增一位数或依次递增二位数的顺子 </p><p data-pid="0IYukjmt">17 三杠 3个杠</p><p data-pid="UxQPEURr">18 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E6%B7%B7%E5%B9%BA%E4%B9%9D&amp;zhida_source=entity" target="_blank">混幺九<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由字牌和序数牌一、九的刻子用将牌组成的和牌。不计碰碰和 </p><p data-pid="t3vlJ6aL"><b>24番</b></p><p data-pid="nYU3rm-p">19 七对 由7个对子组成和牌。不计不求人、单钓</p><p data-pid="UwSa1FJI">20 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%83%E6%98%9F%E4%B8%8D%E9%9D%A0&amp;zhida_source=entity" target="_blank">七星不靠<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 必须有7个单张的东西南北中发白，加上3种花色，数位按147、258、369中的7张序数牌组成没有将牌的和牌。不计五门齐、不求人、单钓</p><p data-pid="Tqrl69Do">21 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%85%A8%E5%8F%8C%E5%88%BB&amp;zhida_source=entity" target="_blank">全双刻<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由2、4、6、8序数牌的刻了、将牌组成的和牌。不计碰碰和、断幺</p><p data-pid="IP-M_exU">22 清一色 由一种花色的序数牌组成和各牌。不无字</p><p data-pid="2KbRjmfC">23 一色三同顺 和牌时有一种花色3副序数相同的顺了。不计一色三节高</p><p data-pid="SY4pNaU5">24 一色三节高 和牌时有一种花色3副依次递增一位数字的刻了。不计一色三同顺</p><p data-pid="B1LMuWCF">25 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%85%A8%E5%A4%A7&amp;zhida_source=entity" target="_blank">全大<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由序数牌789组成的顺了、刻子(杠)、将牌的和牌。不计无字</p><p data-pid="2x_ml5tl">26 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%85%A8%E4%B8%AD&amp;zhida_source=entity" target="_blank">全中<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由序数牌456组成的顺子、刻子(杠)、将牌的和牌。不计断幺</p><p data-pid="z-MYXQRZ">27 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%85%A8%E5%B0%8F&amp;zhida_source=entity" target="_blank">全小<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由序数牌123组成的顺子、刻子(杠)将牌的的和牌。不计无字</p><p data-pid="M4HkVz9F"><b>16番</b></p><p data-pid="1CGooMgK">28 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E6%B8%85%E9%BE%99&amp;zhida_source=entity" target="_blank">清龙<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 和牌时，有一种花色1-9相连接的序数牌</p><p data-pid="cQGP3xe2">29 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%89%E8%89%B2%E5%8F%8C%E9%BE%99%E4%BC%9A&amp;zhida_source=entity" target="_blank">三色双龙会<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 2种花色2个老少副、另一种花色5作将的和牌。不计喜相逢、老少副、无字、平和</p><p data-pid="63zf7t7-">30 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%80%E8%89%B2%E4%B8%89%E6%AD%A5%E9%AB%98&amp;zhida_source=entity" target="_blank">一色三步高<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 和牌时，有一种花色3副依次递增一位或依次递增二位数字的顺子</p><p data-pid="zKDLQ3Vt">31 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%85%A8%E5%B8%A6%E4%BA%94&amp;zhida_source=entity" target="_blank">全带五<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 每副牌及将牌必须有5的序数牌。不计断幺</p><p data-pid="gHzpWf4R">32 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%89%E5%90%8C%E5%88%BB&amp;zhida_source=entity" target="_blank">三同刻<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 3个序数相同的刻子(杠)</p><p data-pid="346Dm7wG">33 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E4%B8%89%E6%9A%97%E5%88%BB&amp;zhida_source=entity" target="_blank">三暗刻<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 3个暗刻 </p><p data-pid="NXIbQn4v"><b>12番</b></p><p data-pid="LolROZ96">34 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%85%A8%E4%B8%8D%E9%9D%A0&amp;zhida_source=entity" target="_blank">全不靠<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由单张3种花色147、258、369不能错位的序数牌及东南西北中发白中的任何14张牌组成的和牌。不计五门齐、不求人、单钓</p><p data-pid="-MNcuJiz">35 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E7%BB%84%E5%90%88%E9%BE%99&amp;zhida_source=entity" target="_blank">组合龙<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 3种花色的147、258、369不能错位的序数牌</p><p data-pid="N3jaLMMZ">36 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%A4%A7%E4%BA%8E%E4%BA%94&amp;zhida_source=entity" target="_blank">大于五<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由序数牌6-9的顺子、刻子、将牌组成的和牌。不计无字</p><p data-pid="UsHSTz42">37 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%B0%8F%E4%BA%8E%E4%BA%94&amp;zhida_source=entity" target="_blank">小于五<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 由序数牌1-4的顺子、刻子、将牌组成的和牌。不计无字</p><p data-pid="OJ8chIH3">38 三风刻 3个风刻</p><p data-pid="LYhokQWH"><b>8 番</b></p><p data-pid="kL8Hi-a3">39 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E8%8A%B1%E9%BE%99&amp;zhida_source=entity" target="_blank">花龙<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 3种花色的3副顺子连接成1-9的序数牌</p><p data-pid="aeqPZyZD">40 推不倒 由牌面图形没有上下区别的牌组成的和牌，包括1234589饼、245689条、白板。不计缺一门</p><p data-pid="vWZVKbul">41 三色三同顺 和牌时，有3种花色3副序数相同的顺子</p><p data-pid="Yucn4_ww">42 三色三节高 和牌时，有3种花色3副依次递增一位数的刻子</p><p data-pid="HqSCdprh">43 无番和 和牌后，数不出任何番种分(花牌不计算在内)</p><p data-pid="CdgYEupI">44 妙手回春 自摸牌墙上最后一张牌和牌。不计自摸</p><p data-pid="VDPUVbvl">45 海底捞月 和打出的最后一张牌</p><p data-pid="JJDYRgyg">46 杠上开花 开杠抓进的牌成和牌(不包括补花)不计自摸</p><p data-pid="deR011Hh">47 抢杠和 和别人自抓开明杠的牌。不计和绝张</p><p data-pid="Yf49EghB"><b>6 番</b></p><p data-pid="KkAj9062">48 碰碰和 由4副刻子(或杠)、将牌组成的和牌</p><p data-pid="ja-9nG7Y">49 混一色 由一种花色序数牌及字牌组成的和牌 </p><p data-pid="a2rLLqHg">50 三色三步高 3种花色3副依次递增一位序数的顺子</p><p data-pid="hadf17lV">51 五门齐 和牌时3种序数牌、风、箭牌齐全</p><p data-pid="G2t8Tgg8">52 全求人 全靠吃牌、碰牌、单钓别人批出的牌和牌。不计单钓 </p><p data-pid="3UpHhCVW">53 双暗杠 2个暗杠</p><p data-pid="uaIDXCpL">54 双箭刻 2副箭刻(或杠)</p><p data-pid="sVOciuhq"><b>4 番</b></p><p data-pid="HxayhC1C">55 全带幺 和牌时，每副牌、将牌都有幺牌</p><p data-pid="dndvD5pE">56 不求人 4副牌及将中没有吃牌、碰牌(包括明杠)，自摸和牌</p><p data-pid="A2Od8zQt">57 双明杠 2个明杠</p><p data-pid="fanqr0qe">58 和绝张 和牌池、桌面已亮明的3张牌所剩的第4张牌(抢杠和不计和绝张)</p><p data-pid="QMEbR7vT"><b>2 番</b></p><p data-pid="LSg_v2Hj">59 箭刻 由中、发、白3张相同的牌组成的刻子</p><p data-pid="-wSXh0nn">60 圈风刻 与圈风相同的风刻</p><p data-pid="1dYLwu7u">61 门风刻 与本门风相同的风刻</p><p data-pid="gak2-nTn">62 门前清 没有吃、碰、明杠，和别人打出的牌</p><p data-pid="xRl4B-iC">63 平和 由4副顺子及序数牌作将组成的和牌，边、坎、钓不影响平和</p><p data-pid="3GDsk8ss">64 四归一 和牌中，有4张相同的牌归于一家的顺、刻子、对、将牌中(不包括杠牌)</p><p data-pid="7XpOu8E7">65 双同刻 2副序数相同的刻子 </p><p data-pid="QY0hKpbN">66 双暗刻 2个暗刻</p><p data-pid="oLpN9Nfn">67 暗杠 自抓4张相同的牌开杠</p><p data-pid="es7JeyaU">68 断幺 和牌中没有一、九及字牌 </p><p data-pid="dc6alNgo"><b>1 番</b></p><p data-pid="wTqljeDB">69 一般高 由一种花色2副相同的顺子组成的牌 </p><p data-pid="Zx4JHDKZ">70 喜相逢 2种花色2副序数相同的顺子</p><p data-pid="ZQpn_sbb">71 连六 一种花色6张相连接的序数牌</p><p data-pid="8TK8oyHb">72 老少副 一种花色牌的123、789两副顺子</p><p data-pid="xVQuT7cr">73 幺九刻 3张相同的一、九序数牌及字牌组成的刻子(或杠)</p><p data-pid="pQmV20YH">74 明杠 自己有暗刻，碰别人打出的一张相同的牌开杠：或自己抓进一张与碰的明刻相同的牌开杠</p><p data-pid="Zsnt5iBh">75 缺一门 和牌中缺少一种花色序数牌</p><p data-pid="cfRJT6J2">76 无字 和牌中没有风、箭牌</p><p data-pid="f6tO2l22">77 边张 单和123的3及789的7或1233和3、77879和7都为张。手中有12345和3，56789和6不算边张</p><p data-pid="jb0Q73WO">78 坎张 和2张牌之间的牌。4556和5也为坎张，手中有45567和6不算坎张</p><p data-pid="RbWUvsyW">79 <span><a data-za-not-track-link="true" data-paste-text="true" href="https://zhida.zhihu.com/search?content_id=231595384&amp;content_type=Article&amp;match_order=1&amp;q=%E5%8D%95%E9%92%93%E5%B0%86&amp;zhida_source=entity" target="_blank">单钓将<svg width="10px" height="10px" viewBox="0 0 16 16" fill="currentColor"><path d="m5.068 9.267-3.08-.77a.512.512 0 0 1 0-.994l3.08-.77a2.289 2.289 0 0 0 1.665-1.665l.77-3.08a.512.512 0 0 1 .994 0l.77 3.08c.205.82.845 1.46 1.665 1.665l3.08.77a.512.512 0 0 1 0 .994l-3.08.77a2.29 2.29 0 0 0-1.665 1.665l-.77 3.08a.512.512 0 0 1-.994 0l-.77-3.08a2.289 2.289 0 0 0-1.665-1.665Z"></path></svg></a></span> 钓单张牌作将成和</p><p data-pid="WWrR2Pus">80 自摸 自己抓进牌成和牌</p><p data-pid="lY0IhaNN">81 花牌 即春夏秋冬，梅兰竹菊，每花计一分。不计在起和分内，和牌后才能计分。花牌补花成和计自摸分，不计杠上开花</p></div></div>
+  <span></span> <!-- for IntersectionObserver -->
+  
+  
+  
+  
+
+
+<style id="note-styling">
+    .note {
+      position: absolute;
+      z-index: 10;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: inherit;
+      padding: 5px;
+      min-width: 32px;
+      min-height: 32px;
+    }
+    .note:focus {
+      z-index: 11;
+    }
+    .note[type="0"] {
+      background-color: #fff740;
+      color: #2c2c2d;
+    }
+    .note[type="0"]::placeholder {
+      color: #868226;
+    }
+    .note[type="1"] {
+      background-color: #feff9c;
+      color: #2c2c2d;
+    }
+    .note[type="1"]::placeholder {
+      color: #6d6d3d;
+    }
+    .note[type="2"] {
+      background-color: #ff65a3;
+      color: #2c2c2d;
+    }
+    .note[type="2"]::placeholder {
+      color: #65263f;
+    }
+    .note[type="3"] {
+      background-color: #ff7eb9;
+      color: #2c2c2d;
+    }
+    .note[type="3"]::placeholder {
+      color: #562b3f;
+    }
+    .note[type="4"] {
+      background-color: #7afcff;
+      color: #295c5d;
+    }
+    .note[type="4"]::placeholder {
+      color: #377677;
+    }</style></body><style>body {
+      font-size:  14px;
+      font-family: Helvetica, Arial, sans-serif;
+      width: min(100% - 2rem, 900px);
+    }
+    p {
+      text-align: justify
+    }
+    .page {
+      line-height: 1.0em;;
+      column-count: unset;
+    }
+    h1, h2, h3 {
+      line-height: initial;
+    }</style></html>
